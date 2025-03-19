@@ -1,4 +1,4 @@
-package main
+package importScan
 
 import (
 	"bytes"
@@ -17,28 +17,36 @@ var dojo_url = os.Getenv("DEFECTDOJO_URL")
 var dojo_username = os.Getenv("DEFECTDOJO_USERNAME")
 var dojo_password = os.Getenv("DEFECTDOJO_PASSWORD")
 
-var engagement = "test2"
+var file_name = "results.json"
 var product_name = "Apple Accounting Software"
+var minimum_severity = "Info"
+var active = "true"
+var verified = "true"
+var scan_type = "Bandit Scan"
+var close_old_findings = "false"
+var push_to_jira = "false"
+var scan_date = "2025-03-18"
+var check_list = "true"
+var status = "Not Started"
+var engagement_name = "test1"
+
+// var auto_create_context = "True"
 
 type Results struct {
 	Results []struct {
 		Id int `json:"id"`
 	}
-
-	// Engagement []Engagement
 }
 
-// type Product struct {
-// 	Id []int `json:"id"`
-// }
-
-// type Engagement struct {
-// 	Id int `json:"id"`
+// type File struct {
+// 	Path            string
+// 	BytesSize       int64
+// 	PrettyBytesSize string
 // }
 
 func authenticate() string {
 	var dojo_auth_url = dojo_url + "/api-token-auth/"
-	fmt.Println("Authenticate and return token")
+	fmt.Println("Authenticating...")
 	values := map[string]string{"username": dojo_username, "password": dojo_password}
 	json_data, err := json.Marshal(values)
 
@@ -143,23 +151,25 @@ func create_enganement(token string, product_id int, engagement string) string {
 	return created_id
 }
 
-func import_scan(token string, product_name string, engagement_id string) (*http.Request, error) {
+func import_scan(token string, product_name string) (*http.Request, error) {
 	fmt.Println("Import scan")
 	var dojo_import_url = dojo_url + "/import-scan/"
-	path := "results.json"
+	path := file_name
 	extraParams := map[string]string{
-		"minimum_severity":   "Info",
-		"active":             "true",
-		"verified":           "true",
-		"scan_type":          "Bandit Scan",
-		"close_old_findings": "false",
-		"push_to_jira":       "false",
-		"product_name":       product_name,
-		"scan_date":          "2025-03-18",
-		"check_list":         "true",
-		"status":             "Not Started",
-		"engagement":         engagement_id,
-		"engagement_name":    "test1",
+		"minimum_severity":    minimum_severity,
+		"active":              active,
+		"verified":            verified,
+		"scan_type":           scan_type,
+		"close_old_findings":  close_old_findings,
+		"push_to_jira":        push_to_jira,
+		"product_name":        product_name,
+		"scan_date":           scan_date,
+		"check_list":          check_list,
+		"status":              status,
+		"engagement_name":     engagement_name,
+		"auto_create_context": "True",
+		// "engagement":          engagement_id,
+
 	}
 	file, err := os.Open(path)
 	if err != nil {
@@ -207,19 +217,22 @@ func import_scan(token string, product_name string, engagement_id string) (*http
 	return req, err
 }
 
-func main() {
-
+func CreateImport(test int) int {
+	// flag.SetUsage("Usage: %s [options] [command]", os.Args[0])
+	// var help bool
+	fmt.Println(test)
 	token := authenticate()
-	fmt.Println(token)
+	// fmt.Println(token)
 
-	product_id := get_product(token, product_name)
-	fmt.Println(product_id)
+	// product_id := get_product(token, product_name)
+	// fmt.Println(product_id)
 
-	engagement_id := get_engagement(token, product_id, engagement)
-	if fmt.Sprint(engagement_id) == "" {
-		engagement_id = create_enganement(token, product_id, engagement)
-	}
-	scan_import, _ := import_scan(token, product_name, engagement_id)
+	// engagement_id := get_engagement(token, product_id, engagement)
+	// if fmt.Sprint(engagement_id) == "" {
+	// 	engagement_id = create_enganement(token, product_id, engagement)
+	// }
+	scan_import, _ := import_scan(token, product_name)
 	fmt.Println(scan_import)
+	return 1
 
 }
