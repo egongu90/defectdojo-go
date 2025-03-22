@@ -3,6 +3,13 @@ DefectDojo Go Client
 
 This library interact with DefectDojo API to upload scan results.
 
+Tested on DefectDojo API v2.
+
+Disclaimer:
+
+This proyect was just roughly 5h of work for the first time coding in golang learning from 0.
+It may and probably won't be maintained.
+
 ## Installation
 
 Compiled release
