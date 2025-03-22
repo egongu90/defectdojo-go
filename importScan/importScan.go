@@ -151,7 +151,12 @@ func create_enganement(token string, product_id int, engagement string) string {
 	return created_id
 }
 
-func import_scan(token string, product_name string) (*http.Request, error) {
+func import_scan(token string, product_name string, engagement_name string, file_name string,
+	scan_type string, minimum_severity string, active string,
+	verified string, close_old_findings string, push_to_jira string,
+	scan_date string, check_list string, status string) (*http.Request, error) {
+	// This function upload a security test result to the import-scan API endpoint
+	// Creates a map of params for the HTTP post request and prints the status code.
 	fmt.Println("Import scan")
 	var dojo_import_url = dojo_url + "/import-scan/"
 	path := file_name
@@ -193,7 +198,6 @@ func import_scan(token string, product_name string) (*http.Request, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(path)
 	req, err := http.NewRequest("POST", dojo_import_url, body)
 	req.Header.Add("Authorization", "Token "+token)
 	req.Header.Set("Content-Type", writer.FormDataContentType())
@@ -211,28 +215,27 @@ func import_scan(token string, product_name string) (*http.Request, error) {
 			log.Fatal(err)
 		}
 		resp.Body.Close()
-		fmt.Println(resp.StatusCode)
+		fmt.Println("Status code: " + fmt.Sprint(resp.StatusCode))
 	}
-	// fmt.Println(req)
 	return req, err
 }
 
-func CreateImport(test int) int {
-	// flag.SetUsage("Usage: %s [options] [command]", os.Args[0])
-	// var help bool
-	fmt.Println(test)
+func CreateImport(product_name string, engagement_name string, file_name string,
+	scan_type string, minimum_severity string, active string,
+	verified string, close_old_findings string, push_to_jira string,
+	scan_date string, check_list string, status string) (*http.Request, error) {
 	token := authenticate()
-	// fmt.Println(token)
+	// This functions removed since I added the auto create param so defectdojo api will
+	// create product and engagement if does not exists, keeping the function code just
+	// in case I decide to reincorporate them as option
 
 	// product_id := get_product(token, product_name)
-	// fmt.Println(product_id)
-
 	// engagement_id := get_engagement(token, product_id, engagement)
 	// if fmt.Sprint(engagement_id) == "" {
 	// 	engagement_id = create_enganement(token, product_id, engagement)
 	// }
-	scan_import, _ := import_scan(token, product_name)
-	fmt.Println(scan_import)
-	return 1
-
+	scan_import, err := import_scan(token, product_name, engagement_name, file_name,
+		scan_type, minimum_severity, active, verified, close_old_findings,
+		push_to_jira, scan_date, check_list, status)
+	return scan_import, err
 }
