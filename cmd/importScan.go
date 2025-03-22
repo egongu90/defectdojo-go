@@ -41,7 +41,7 @@ func init() {
 	var default_date = currentTime.Format(YYYYMMDD)
 	rootCmd.AddCommand(importScanCmd)
 
-	importScanCmd.PersistentFlags().String("file_name", "results.json", "File name or absolute path to upload.")
+	importScanCmd.PersistentFlags().String("file_name", "results.json", "File name or path to upload.")
 	viper.BindPFlag("file_name", importScanCmd.PersistentFlags().Lookup("file_name"))
 	importScanCmd.MarkPersistentFlagRequired("file_name")
 
