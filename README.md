@@ -16,14 +16,14 @@ Compiled release
 
 ```sh
 VERSION="v1.0.0"
-wget -O /usr/local/bin/defectdojo-go https://github.com/xNaaro/defectdojo-go/releases/download/$VERSION/binary-linux-amd64
+wget -O /usr/local/bin/defectdojo-go https://github.com/egongu90/defectdojo-go/releases/download/$VERSION/binary-linux-amd64
 chmod +x /usr/local/bin/defectdojo-go
 ```
 
 With go install
 
 ```sh
-go install github.com/xNaaro/defectdojo-go@latest
+go install github.com/egongu90/defectdojo-go@latest
 ```
 
 ## Usage
