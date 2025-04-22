@@ -8,7 +8,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/xNaaro/defectdojo-go/importScan"
+	"github.com/egongu90/defectdojo-go/importScan"
 )
 
 // importScanCmd represents the importScan command

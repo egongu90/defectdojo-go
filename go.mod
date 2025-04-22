@@ -1,4 +1,4 @@
-module github.com/xNaaro/defectdojo-go
+module github.com/egongu90/defectdojo-go
 
 go 1.24.1
 
